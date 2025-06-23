@@ -1,4 +1,5 @@
 import streamlit as st
+from haversine import haversine
 
 st.title("Busca de Caminhos - Algoritmo A*")
 
@@ -42,6 +43,14 @@ grafo = {
     'GRU': {'PFB': 792, 'POA': 863, 'FLN': 513},
 }
 
+coordenadas = {
+    'CXJ': (-29.195, -51.187),
+    'GEL': (-28.281, -54.169),
+    'PFB': (-28.243, -52.327),
+    'POA': (-29.994, -51.171),
+    'FLN': (-27.670, -48.552),
+    'GRU': (-23.425, -46.468),
+}
 
 cidades = list(grafo.keys())
 
@@ -86,13 +95,23 @@ destino = st.selectbox("Cidade de Destino:", cidades)
 
 st.markdown("Clique no botão para calcular o caminho:")
 
+def calcular_heuristica(destino):
+    h = {}
+    destino_coord = coordenadas[destino]
+    for cidade in grafo.keys():
+        h[cidade] = haversine(coordenadas[cidade], destino_coord)
+    return h
+
+
 if st.button("🔍 Encontrar Caminho"):
     if origem == destino:
-        st.warning(" ⚠️ Origem e destino são iguais. Por favor, escolha cidades diferentes.")
+        st.warning("⚠️ Origem e destino são iguais. Por favor, escolha cidades diferentes.")
     else:
+        heuristica = calcular_heuristica(destino)  # Gera heurística real baseada no destino
         caminho, custo = a_star(grafo, origem, destino, heuristica)
         if caminho:
-            st.success(f" ✅ Caminho mais curto de **{origem}** até **{destino}**: {' ➡️ '.join(caminho)}")
-            st.info(f"Distância total: **{custo} km**")
+            st.success(f"✅ Caminho mais curto de **{origem}** até **{destino}**: {' ➡️ '.join(caminho)}")
+            st.info(f"Distância total: **{custo:.2f} km**")
         else:
-            st.error(" ❌ Não foi encontrado um caminho entre as cidades selecionadas.")
+            st.error("❌ Não foi encontrado um caminho entre as cidades selecionadas.")
+
