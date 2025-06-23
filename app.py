@@ -72,3 +72,27 @@ def a_star(grafo, inicio, objetivo, heuristica):
                 heapq.heappush(fila, (novo_f, novo_g, vizinho, caminho + [vizinho]))
 
     return None, float('inf')  # aqui é quando nao acha nenhum caminho
+
+
+# ==============================
+# Interface Streamlit - Dropdowns e Botão
+# ==============================
+
+
+st.markdown("## Escolha as Cidades:")
+
+origem = st.selectbox("Cidade de Origem:", cidades)
+destino = st.selectbox("Cidade de Destino:", cidades)
+
+st.markdown("Clique no botão para calcular o caminho:")
+
+if st.button("🔍 Encontrar Caminho"):
+    if origem == destino:
+        st.warning(" ⚠️ Origem e destino são iguais. Por favor, escolha cidades diferentes.")
+    else:
+        caminho, custo = a_star(grafo, origem, destino, heuristica)
+        if caminho:
+            st.success(f" ✅ Caminho mais curto de **{origem}** até **{destino}**: {' ➡️ '.join(caminho)}")
+            st.info(f"Distância total: **{custo} km**")
+        else:
+            st.error(" ❌ Não foi encontrado um caminho entre as cidades selecionadas.")
