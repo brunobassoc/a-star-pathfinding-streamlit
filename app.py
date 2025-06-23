@@ -129,6 +129,8 @@ def calcular_heuristica(destino):
         h[cidade] = haversine(coordenadas[cidade], destino_coord)
     return h
 
+if "caminho" not in st.session_state:
+    st.session_state["caminho"] = None
 
 if st.button("🔍 Encontrar Caminho"):
     if origem == destino:
@@ -137,10 +139,14 @@ if st.button("🔍 Encontrar Caminho"):
         heuristica = calcular_heuristica(destino)
         caminho, custo = a_star(grafo, origem, destino, heuristica)
         if caminho:
+            st.session_state["caminho"] = caminho  # Salva o caminho no estado
             st.success(f"✅ Caminho mais curto de **{origem}** até **{destino}**: {' ➡️ '.join(caminho)}")
             st.info(f"Distância total: **{custo:.2f} km**")
-            st.markdown("### 🗺️ Visualização do Caminho no Mapa:")
-            mostrar_mapa(caminho)
         else:
             st.error("❌ Não foi encontrado um caminho entre as cidades selecionadas.")
+
+if st.session_state["caminho"]:
+    st.markdown("### 🗺️ Visualização do Caminho no Mapa:")
+    mostrar_mapa(st.session_state["caminho"])
+
 
