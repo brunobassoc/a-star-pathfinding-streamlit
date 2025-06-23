@@ -134,11 +134,13 @@ if st.button("🔍 Encontrar Caminho"):
     if origem == destino:
         st.warning("⚠️ Origem e destino são iguais. Por favor, escolha cidades diferentes.")
     else:
-        heuristica = calcular_heuristica(destino)  # Gera heurística real baseada no destino
+        heuristica = calcular_heuristica(destino)
         caminho, custo = a_star(grafo, origem, destino, heuristica)
         if caminho:
             st.success(f"✅ Caminho mais curto de **{origem}** até **{destino}**: {' ➡️ '.join(caminho)}")
             st.info(f"Distância total: **{custo:.2f} km**")
+            st.markdown("### 🗺️ Visualização do Caminho no Mapa:")
+            mostrar_mapa(caminho)
         else:
             st.error("❌ Não foi encontrado um caminho entre as cidades selecionadas.")
 
