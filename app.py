@@ -1,0 +1,34 @@
+import streamlit as st
+
+st.title("Busca de Caminhos - Algoritmo A*")
+
+st.markdown ("""
+## Explicação Teórica: O que é o Algoritmo A\*?
+
+O ** Algoritmo A\*** é um dos algoritmos mais famosos para busca de caminhos ótimos em um grafo, muito usado em **navegação de mapas**, **inteligência artificial** e **jogos**.
+
+### Como o A* funciona?
+
+O A* utiliza a seguinte fórmula de avaliação:
+
+f(n) = g(n) + h(n)
+
+             
+Onde:
+
+- **g(n):** Custo real para chegar ao nó atual `n` partindo da origem.
+- **h(n):** Heurística → uma estimativa do custo restante para chegar até o destino.
+- **f(n):** Custo total estimado para ir da origem até o destino passando por `n`.
+
+### Vantagens do A*:
+
+- Garante encontrar o caminho mais curto (desde que a heurística seja admissível).
+- Explora menos caminhos inúteis do que o algoritmo de Dijkstra puro.
+
+### Importância da Heurística:
+
+Uma **boa heurística** aproxima o custo real restante sem superestimá-lo.
+
+Exemplo comum de heurística: **distância em linha reta entre dois pontos no mapa**.
+
+""")
