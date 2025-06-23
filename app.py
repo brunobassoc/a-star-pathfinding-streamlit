@@ -32,3 +32,12 @@ Uma **boa heurística** aproxima o custo real restante sem superestimá-lo.
 Exemplo comum de heurística: **distância em linha reta entre dois pontos no mapa**.
 
 """)
+
+grafo = {
+    'CXJ': {'POA': 98, 'GEL': 306},
+    'GEL': {'POA': 254, 'CXJ': 306},
+    'PFB': {'GRU': 792},
+    'POA': {'CXJ': 98, 'GEL': 254, 'FLN': 450, 'GRU': 863},
+    'FLN': {'POA': 450, 'GRU': 513},
+    'GRU': {'PFB': 792, 'POA': 863, 'FLN': 513},
+}
