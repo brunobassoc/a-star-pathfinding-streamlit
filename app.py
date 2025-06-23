@@ -1,5 +1,7 @@
 import streamlit as st
 from haversine import haversine
+import folium
+from streamlit_folium import st_folium
 
 st.title("Busca de Caminhos - Algoritmo A*")
 
@@ -81,6 +83,31 @@ def a_star(grafo, inicio, objetivo, heuristica):
                 heapq.heappush(fila, (novo_f, novo_g, vizinho, caminho + [vizinho]))
 
     return None, float('inf')  # aqui é quando nao acha nenhum caminho
+
+def mostrar_mapa(caminho):
+    mapa = folium.Map(location=[-29.994, -51.171],zoom_start=6)
+    #porto alegre fica como refrenia central, se leu isso o gremio vai cair kkkkkk
+
+    for cidade in caminho:
+        lat, lon = coordenadas[cidade]
+        folium.Marker(
+            location=[lat, lon],
+            popup=cidade,
+            icon=folium.Icon(color='blue', icon='plane', prefix='fa')
+        ).add_to(mapa)
+
+    for i in range(len(caminho)-1):
+        origem_coord = coordenadas[caminho[i]]
+        destino_coord = coordenadas[caminho[i + 1]]
+        folium.PolyLine(
+            locations=[origem_coord, destino_coord],
+            color='red',
+            weight=3,
+            opacity=0.7
+        )
+
+        st_folium(mapa, width=700, height=500)
+
 
 
 # ==============================
