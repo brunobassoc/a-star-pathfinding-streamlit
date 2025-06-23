@@ -41,3 +41,34 @@ grafo = {
     'FLN': {'POA': 450, 'GRU': 513},
     'GRU': {'PFB': 792, 'POA': 863, 'FLN': 513},
 }
+
+
+cidades = list(grafo.keys())
+
+import heapq
+
+def a_star(grafo, inicio, objetivo, heuristica):
+    # fila de prioridade: (f(n), g(n), cidade atual, caminho percorrido)
+    fila = []
+    heapq.heappush(fila, (0 + heuristica[inicio], 0, inicio, [inicio]))
+
+    visitados = set()
+
+    while fila:
+        f, g, atual, caminho = heapq.heappop(fila)
+
+        if atual == objetivo:
+            return caminho, g  # aqui da o caminho encontrado com custo total
+
+        if atual in visitados:
+            continue
+
+        visitados.add(atual)
+
+        for vizinho, custo in grafo.get(atual, {}).items():
+            if vizinho not in visitados:
+                novo_g = g + custo
+                novo_f = novo_g + heuristica.get(vizinho, 0)
+                heapq.heappush(fila, (novo_f, novo_g, vizinho, caminho + [vizinho]))
+
+    return None, float('inf')  # aqui é quando nao acha nenhum caminho
